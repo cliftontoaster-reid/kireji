@@ -1,9 +1,10 @@
 # Kireji
 
 Kireji (Japanese: 切れ字) is a C++ library with the goal of providing a feature-rich HTTP parser, for the use in web servers, proxies, and other applications that need to handle HTTP requests and responses.
-It will be written in C++98, without any dependencies as well as C++ containers, it's goal is to be used in restricted environments, projects where the allowed features of C++ are very limited, and to be as portable as possible.
+It will be written in C++98, without any dependencies as well as C++ containers, its goal is to be used in restricted environments, projects where the allowed features of C++ are very limited, and to be as portable as possible.
 
-Made for usage in 42 school projects, it will be designed to follow requirements of the `webserv` version $24.0$ project, I am still providing this library under the MIT license, so that it may be used to further anyone's learning experience with C++ and the HTTP protocol.
+Made for usage in 42 school projects, it will be designed to follow requirements of the `webserv` version $24.0$ project.
+I am still providing this library under the MIT licence, so that it may be used to further anyone's learning experience with C++ and the HTTP protocol.
 
 ## Planned features
 
