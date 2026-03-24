@@ -8,12 +8,12 @@ I am still providing this library under the MIT licence, so that it may be used 
 
 ## Planned features
 
-- HTTP request parsing
+- HTTP request deserialization/serialization
   - HTTP/1.0
   - HTTP/1.1
   - HTTP/2.0
   - HTTP/3.0
-- HTTP response parsing
+- HTTP response deserialization/serialization
   - HTTP/1.0
   - HTTP/1.1
   - HTTP/2.0
