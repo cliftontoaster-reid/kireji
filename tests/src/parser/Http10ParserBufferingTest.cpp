@@ -6,6 +6,8 @@
 #include "parser/Http10Parser.hpp"
 #include "parser/HttpTestHelpers.hpp"
 
+#ifdef KIREJI_ENABLE_HTTP1_0
+
 TEST(Http10ParserBufferingTest, WaitsForRequestLineCompletion) {
   Http10Parser parser;
 
@@ -127,3 +129,5 @@ TEST(Http10ParserBufferingTest,
   ASSERT_TRUE(second.get() != NULL);
   EXPECT_EQ("/two", second->path);
 }
+
+#endif

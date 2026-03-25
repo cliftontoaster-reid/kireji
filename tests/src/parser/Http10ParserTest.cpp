@@ -6,6 +6,8 @@
 
 #include "parser/Http10Parser.hpp"
 
+#ifdef KIREJI_ENABLE_HTTP1_0
+
 static std::string makeRequest(const std::string& requestLine,
                                const std::string& headers,
                                const std::string& body) {
@@ -152,3 +154,5 @@ TEST(Http10ParserTest, RejectsInvalidContentLength) {
   EXPECT_THROW(parser.feed(requestText.c_str(), requestText.size()),
                std::invalid_argument);
 }
+
+#endif

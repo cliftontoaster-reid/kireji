@@ -2,6 +2,8 @@
 
 #include <stdexcept>
 
+#ifdef KIREJI_ENABLE_HTTP1_0
+
 static std::string trimLeft(const std::string& value) {
   std::size_t index = 0;
   while (index < value.size() &&
@@ -259,3 +261,5 @@ HttpRequest* Http10Parser::nextRequest() {
 
   return requests_.pop_front();
 }
+
+#endif

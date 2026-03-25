@@ -6,6 +6,8 @@
 #include "parser/Http10Parser.hpp"
 #include "parser/HttpTestHelpers.hpp"
 
+#ifdef KIREJI_ENABLE_HTTP1_0
+
 TEST(Http10ParserBasicsTest, ParsesMinimalRequestAndEncodesRoundTrip) {
   Http10Parser parser;
   const std::string requestText = buildHttp10Request("GET / HTTP/1.0");
@@ -100,3 +102,5 @@ TEST(Http10ParserBasicsTest, CanReuseParserAfterPoppingRequest) {
   ASSERT_TRUE(second.get() != NULL);
   EXPECT_EQ("/two", second->path);
 }
+
+#endif

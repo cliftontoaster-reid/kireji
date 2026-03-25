@@ -70,6 +70,7 @@ endif()
 # Create test executable
 # ========================================
 add_executable(kireji_tests ${TEST_SOURCES})
+target_compile_definitions(kireji_tests PRIVATE ${KIREJI_COMPILE_DEFS})
 
 # Link against the kireji library (use shared library if available, else static)
 if(BUILD_SHARED)

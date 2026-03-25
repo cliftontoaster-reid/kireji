@@ -6,6 +6,8 @@
 #include "parser/Http10Parser.hpp"
 #include "parser/HttpTestHelpers.hpp"
 
+#ifdef KIREJI_ENABLE_HTTP1_0
+
 TEST(Http10ParserFailureTest, RejectsUnsupportedHttpVersion) {
   Http10Parser parser;
   const std::string requestText = buildHttp10Request("GET / HTTP/1.1");
@@ -73,3 +75,5 @@ TEST(Http10ParserFailureTest, RejectsEmptyContentLengthValue) {
   EXPECT_THROW(parser.feed(requestText.c_str(), requestText.size()),
                std::invalid_argument);
 }
+
+#endif
