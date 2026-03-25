@@ -97,3 +97,26 @@ TEST(VecTest, SupportsStringValues) {
   EXPECT_EQ("hello", values.front());
   EXPECT_EQ("world", values[1]);
 }
+
+TEST(VecTest, PopFrontUpdatesOffsetAndKeepsOrder) {
+  Vec<int> values;
+
+  values.push_back(10);
+  values.push_back(20);
+  values.push_back(30);
+  values.push_back(40);
+
+  EXPECT_EQ(10, values.pop_front());
+  EXPECT_EQ(20, values.front());
+  EXPECT_EQ(3u, values.size());
+
+  values.push_back(50);
+  EXPECT_EQ(20, values[0]);
+  EXPECT_EQ(30, values[1]);
+  EXPECT_EQ(40, values[2]);
+  EXPECT_EQ(50, values[3]);
+
+  values.reserve(16);
+  EXPECT_EQ(20, values.front());
+  EXPECT_EQ(4u, values.size());
+}

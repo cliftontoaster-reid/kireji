@@ -143,6 +143,7 @@ class Vec {
   T* data_;
   std::size_t size_;
   std::size_t capacity_;
+  std::size_t offset_;
 
   void clearStorage();
 };
