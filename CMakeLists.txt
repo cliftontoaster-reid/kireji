@@ -27,6 +27,17 @@ option(ENABLE_HTTP2 "Enable HTTP/2 support (default: OFF)" OFF)
 option(ENABLE_HTTP3 "Enable HTTP/3 support (default: OFF)" OFF)
 option(ENABLE_TLS "Enable TLS support (default: OFF)" OFF)
 option(ENABLE_COMPRESSION "Enable compression support (default: OFF)" OFF)
+option(ENABLE_FSANITIZE
+	"Enable runtime sanitizer instrumentation (default: OFF)"
+	OFF
+)
+set(
+	FSANITIZE_TYPES
+	"address;undefined"
+	CACHE
+		STRING
+		"Sanitizer types to enable when ENABLE_FSANITIZE is ON (semicolons or commas are accepted, e.g. address;undefined;leak)"
+)
 
 option(BUILD_TESTS "Build unit tests (default: OFF)" OFF)
 option(BUILD_EXAMPLES "Build example applications (default: OFF)" OFF)
@@ -47,6 +58,24 @@ if(ENABLE_COVERAGE)
 	else()
 		message(WARNING
 			"Coverage is not supported with MSVC. ENABLE_COVERAGE will be ignored."
+		)
+	endif()
+endif()
+
+if(ENABLE_FSANITIZE)
+	if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+		# Allow commas and semicolons in FSANITIZE_TYPES
+		string(REPLACE "," ";" FSANITIZE_LIST "${FSANITIZE_TYPES}")
+		foreach(SANITIZER ${FSANITIZE_LIST})
+			if(SANITIZER)
+				message(STATUS "AddressSanitizer: adding -fsanitize=${SANITIZER}")
+				add_compile_options(-fsanitize=${SANITIZER} -fno-omit-frame-pointer)
+				add_link_options(-fsanitize=${SANITIZER})
+			endif()
+		endforeach()
+	else()
+		message(WARNING
+			"fsanitize is not supported with MSVC. ENABLE_FSANITIZE will be ignored."
 		)
 	endif()
 endif()
