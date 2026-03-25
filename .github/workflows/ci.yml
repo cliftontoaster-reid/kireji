@@ -58,34 +58,3 @@ jobs:
           mkdir -p build/${{ matrix.compiler }}/${{ matrix.build_type }}/ctest_reports
           ctest --test-dir build/${{ matrix.compiler }}/${{ matrix.build_type }} --output-on-failure --verbose \
             | tee build/${{ matrix.compiler }}/${{ matrix.build_type }}/ctest_reports/ctest.log
-
-      - name: Locate coverage data files
-        run: |
-          echo "Looking for .gcda in build/${{ matrix.compiler }}/${{ matrix.build_type }}"
-          find build/${{ matrix.compiler }}/${{ matrix.build_type }} -type f -name '*.gcda' -print || true
-
-      - name: Generate coverage report
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y lcov
-          coverage_dirs=$(find build/${{ matrix.compiler }}/${{ matrix.build_type }} -type f -name '*.gcda' -exec dirname {} \; | sort -u)
-          if [ -z "$coverage_dirs" ]; then
-            echo "No .gcda files found under build/${{ matrix.compiler }}/${{ matrix.build_type }}"
-            exit 1
-          fi
-          lcov_args=""
-          for coverage_dir in $coverage_dirs; do
-            lcov_args="$lcov_args --directory $coverage_dir"
-          done
-          lcov --capture $lcov_args --output-file coverage.info
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info
-          lcov --remove coverage.info '*/_deps/*' --output-file coverage.info
-          lcov --list coverage.info
-
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          files: coverage.info
-          fail_ci_if_error: false
-          verbose: true
