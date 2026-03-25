@@ -30,6 +30,9 @@ class IHttpParser {
   /**
    * @brief Feeds raw bytes from the TCP stream into the parser.
    *
+   * @param data Input buffer.
+   * @param size Number of bytes in @p data.
+   *
    * Packet boundaries are not part of the parser contract. Implementations may
    * buffer partial input until a complete request is available.
    */
@@ -37,6 +40,8 @@ class IHttpParser {
 
   /**
    * @brief Returns true when a full request is ready to be popped.
+   *
+   * @return true when a request is available; false otherwise.
    */
   virtual bool hasRequest() const = 0;
 
@@ -45,6 +50,8 @@ class IHttpParser {
    *
    * The caller owns the returned object and must delete it when finished.
    * Returns NULL when no completed request is available.
+   *
+   * @return Oldest completed request, or NULL when none is available.
    */
   virtual HttpRequest* nextRequest() = 0;
 };

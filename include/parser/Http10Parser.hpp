@@ -34,6 +34,9 @@ class Http10Parser : public IHttpParser {
   /**
    * @brief Feeds raw bytes into the parser.
    *
+   * @param data Input buffer.
+   * @param size Number of bytes in @p data.
+   *
    * Packet boundaries are ignored. Completed requests are queued in FIFO
    * order, and incomplete tails are kept for the next call.
    *
@@ -44,6 +47,8 @@ class Http10Parser : public IHttpParser {
 
   /**
    * @brief Returns true when at least one completed request is queued.
+   *
+   * @return true when a request is queued; false otherwise.
    */
   bool hasRequest() const;
 
@@ -51,6 +56,8 @@ class Http10Parser : public IHttpParser {
    * @brief Returns the oldest completed request, or NULL when none is queued.
    *
    * The caller owns the returned object and must delete it.
+   *
+   * @return Oldest completed request, or NULL when none is queued.
    */
   HttpRequest* nextRequest();
 

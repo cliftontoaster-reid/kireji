@@ -32,6 +32,8 @@ class Vec {
   /**
    * @brief Copies all elements from @p other.
    *
+   * @param other Vector to copy from.
+   *
    * The new vector owns its own storage and elements.
    */
   Vec(const Vec& other);
@@ -44,12 +46,17 @@ class Vec {
   /**
    * @brief Replaces the current contents with a copy of @p other.
    *
+   * @param other Vector to copy from.
+   * @return Reference to this vector.
+   *
    * The new vector owns its own storage and elements.
    */
   Vec& operator=(const Vec& other);
 
   /**
    * @brief Ensures the vector can store at least @p newCapacity elements.
+   *
+   * @param newCapacity Minimum capacity to reserve.
    *
    * Existing elements are preserved. This function never shrinks the allocated
    * storage.
@@ -58,6 +65,8 @@ class Vec {
 
   /**
    * @brief Appends @p value to the end of the vector.
+   *
+   * @param value Element to append.
    *
    * The vector grows automatically when it runs out of capacity.
    */
@@ -75,17 +84,22 @@ class Vec {
 
   /**
    * @brief Returns true when the vector contains no elements.
+   *
+   * @return true when the vector contains no elements; false otherwise.
    */
   bool empty() const;
 
   /**
    * @brief Returns the number of stored elements.
+   *
+   * @return Number of stored elements.
    */
   std::size_t size() const;
 
   /**
    * @brief Returns a reference to the first element.
    *
+   * @return Reference to the first element.
    * @throws std::runtime_error if the vector is empty.
    */
   T& front();
@@ -93,6 +107,7 @@ class Vec {
   /**
    * @brief Returns a const reference to the first element.
    *
+   * @return Const reference to the first element.
    * @throws std::runtime_error if the vector is empty.
    */
   const T& front() const;
@@ -100,12 +115,18 @@ class Vec {
   /**
    * @brief Returns a reference to the element at @p index.
    *
+   * @param index Zero-based element index.
+   * @return Reference to the element at @p index.
+   *
    * This accessor does not perform bounds checking.
    */
   T& operator[](std::size_t index);
 
   /**
    * @brief Returns a const reference to the element at @p index.
+   *
+   * @param index Zero-based element index.
+   * @return Const reference to the element at @p index.
    *
    * This accessor does not perform bounds checking.
    */

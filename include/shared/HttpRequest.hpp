@@ -22,12 +22,18 @@ enum HttpVersion {
 /**
  * @brief Writes an HTTP version token to @p os.
  *
+ * @param os Output stream to write to.
+ * @param version HTTP version to render.
+ *
  * @return @p os after writing the version string.
  */
 std::ostream& operator<<(std::ostream& os, HttpVersion version);
 
 /**
  * @brief Returns the textual HTTP version token for @p version.
+ *
+ * @param version HTTP version to convert.
+ * @return Textual HTTP version token.
  */
 std::string to_string(HttpVersion version);
 
@@ -84,11 +90,21 @@ class HttpRequest {
 
   /**
    * @brief Builds a request without a body.
+   *
+   * @param m HTTP method.
+   * @param p Request target path.
+   * @param v HTTP version.
    */
   HttpRequest(HttpMethod m, const std::string& p, HttpVersion v);
 
   /**
    * @brief Builds a request with a body and headers.
+   *
+   * @param m HTTP method.
+   * @param p Request target path.
+   * @param v HTTP version.
+   * @param b Request body.
+   * @param h Headers to copy into the request.
    *
    * The headers are copied into the request.
    */
@@ -97,6 +113,11 @@ class HttpRequest {
 
   /**
    * @brief Builds a request with headers and no body.
+   *
+   * @param m HTTP method.
+   * @param p Request target path.
+   * @param v HTTP version.
+   * @param h Headers to copy into the request.
    *
    * The headers are copied into the request.
    */
@@ -111,13 +132,20 @@ class HttpRequest {
   /**
    * @brief Decodes a request from raw bytes.
    *
+   * @param data Input buffer.
+   * @param size Number of bytes in @p data.
+   *
    * Implementations should return a heap-allocated request object or NULL when
    * the buffer does not yet contain a complete request.
+   *
+   * @return Heap-allocated request object, or NULL if incomplete.
    */
   virtual HttpRequest* decode(const char* data, size_t size) = 0;
 
   /**
    * @brief Serializes the request into HTTP wire format.
+   *
+   * @return Serialized HTTP request.
    */
   virtual std::string encode() const = 0;
 };
@@ -125,6 +153,11 @@ class HttpRequest {
 /**
  * @brief Parses a complete HTTP request from raw bytes.
  *
+ * @param data Input buffer.
+ * @param size Number of bytes in @p data.
+ *
  * Ownership of the returned request is transferred to the caller.
+ *
+ * @return Heap-allocated request object.
  */
 HttpRequest* parseHttpRequest(const char* data, size_t size);
