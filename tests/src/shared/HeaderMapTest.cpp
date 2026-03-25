@@ -119,3 +119,43 @@ TEST(HeaderMapTest, PreservesInsertionOrderInLinkedList) {
   ASSERT_TRUE(headers.head()->next->next != NULL);
   EXPECT_EQ("third", headers.head()->next->next->name);
 }
+
+TEST(HeaderMapTest, SupportsManyHeadersAfterRehash) {
+  HeaderMap headers;
+
+  for (int i = 0; i < 200; ++i) {
+    headers.set("X-Key-" + std::to_string(i), "value-" + std::to_string(i));
+  }
+
+  EXPECT_EQ(200u, headers.size());
+  for (int i = 0; i < 200; ++i) {
+    const std::string key = "x-key-" + std::to_string(i);
+    const std::string expected = "value-" + std::to_string(i);
+    const std::string* value = headers.get(key);
+    ASSERT_TRUE(value != NULL);
+    EXPECT_EQ(expected, *value);
+  }
+
+  ASSERT_TRUE(headers.head() != NULL);
+  EXPECT_EQ("x-key-0", headers.head()->name);
+}
+
+TEST(HeaderMapTest, RemovesAcrossLargeHashedMap) {
+  HeaderMap headers;
+
+  for (int i = 0; i < 128; ++i) {
+    headers.set("Header-" + std::to_string(i), "v");
+  }
+
+  EXPECT_TRUE(headers.remove("header-0"));
+  EXPECT_TRUE(headers.remove("header-63"));
+  EXPECT_TRUE(headers.remove("header-127"));
+  EXPECT_FALSE(headers.remove("header-127"));
+  EXPECT_EQ(125u, headers.size());
+
+  EXPECT_EQ(NULL, headers.get("header-0"));
+  EXPECT_EQ(NULL, headers.get("header-63"));
+  EXPECT_EQ(NULL, headers.get("header-127"));
+  ASSERT_TRUE(headers.get("header-1") != NULL);
+  ASSERT_TRUE(headers.get("header-64") != NULL);
+}

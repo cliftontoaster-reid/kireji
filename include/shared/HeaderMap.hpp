@@ -4,6 +4,8 @@
 #include <cstddef>
 #include <string>
 
+#include "shared/Vec.hpp"
+
 /**
  * @brief Insertion-ordered, case-insensitive map for HTTP headers.
  *
@@ -31,6 +33,7 @@ class HeaderMap {
     Node* prev;  //!< Previous node in insertion order, or NULL for the first
                  //!< node.
     Node* next;  //!< Next node in insertion order, or NULL for the last node.
+    Node* hash_next;  //!< Next node in the same hash bucket chain.
 
     /**
      * @brief Creates a detached node containing @p n and @p v.
@@ -122,9 +125,16 @@ class HeaderMap {
   Node* head() const { return head_; }
 
  private:
+  enum {
+    kInitialBucketCount = 16,
+    kMaxLoadPercent = 70,
+  };
+
   Node* head_;
   Node* tail_;
   std::size_t size_;
+  Vec<Node*> buckets_;
+  std::size_t bucket_count_;
 
   /**
    * @brief Copies all nodes from @p other into this map.
@@ -132,6 +142,15 @@ class HeaderMap {
    * @param other Header map to copy from.
    */
   void copyFrom(const HeaderMap& other);
+
+  void initializeBuckets(std::size_t count);
+  void maybeRehashForInsert();
+  void rehash(std::size_t newBucketCount);
+  std::size_t bucketIndex(const std::string& lowerName) const;
+  Node* findInBucket(const std::string& lowerName, std::size_t index);
+  const Node* findInBucket(const std::string& lowerName,
+                           std::size_t index) const;
+  static std::size_t hashLowerName(const std::string& lowerName);
 
   /**
    * @brief Returns a lowercase copy of @p s.
