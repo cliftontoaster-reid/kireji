@@ -12,7 +12,7 @@
  * appending, indexed access, reserving capacity, and removing the oldest
  * element from the front.
  *
- * ```
+ * ```c++
  * Vec<int> values;
  * values.push_back(10);
  * values.push_back(20);

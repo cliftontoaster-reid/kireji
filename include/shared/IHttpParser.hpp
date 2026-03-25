@@ -11,7 +11,7 @@
  * internally, and expose completed requests through hasRequest() and
  * nextRequest(). Packet boundaries are not part of the contract.
  *
- * ```
+ * ```c++
  * parser.feed(data, size);
  * while (parser.hasRequest()) {
  *   HttpRequest* request = parser.nextRequest();

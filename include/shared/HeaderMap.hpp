@@ -13,7 +13,7 @@
  * accept any case, but each header is stored once and keeps its original
  * position in insertion order.
  *
- * ```
+ * ```c++
  * HeaderMap headers;
  * headers.set("Host", "example.com");
  * headers.set("Content-Length", "12");

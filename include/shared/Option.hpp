@@ -15,7 +15,7 @@
  *
  * @tparam T Stored value type.
  *
- * ```
+ * ```c++
  * Option<int> parsed = Option<int>::Some(42);
  * if (parsed.is_some()) {
  *   int value = parsed.unwrap();
@@ -116,7 +116,7 @@ class Option {
    * @return Reference to the contained value.
    * @throws std::runtime_error if called on None.
    *
-   * ```
+   * ```c++
    * Option<std::string> name = Option<std::string>::Some("kireji");
    * const std::string& value = name.unwrap();
    * ```
@@ -129,7 +129,7 @@ class Option {
    * @param defaultValue Value returned when this option is None.
    * @return Contained value when Some; otherwise @p defaultValue.
    *
-   * ```
+   * ```c++
    * Option<int> maybePort = Option<int>::None();
    * int port = maybePort.unwrap_or(8080); // port == 8080
    * ```
@@ -152,7 +152,7 @@ class Option {
    * @param defaultFunc Function called to produce a default value for None.
    * @return Contained value when Some; otherwise `defaultFunc()`.
    *
-   * ```
+   * ```c++
    * int defaultPort() { return 8080; }
    * Option<int> maybePort = Option<int>::None();
    * int port = maybePort.unwrap_or_else(defaultPort); // port == 8080
@@ -193,7 +193,7 @@ class Option {
    * @return Reference to the contained value.
    * @throws std::runtime_error if called on None.
    *
-   * ```
+   * ```c++
    * Option<std::string> token = Option<std::string>::None();
    * // Throws std::runtime_error("Token must be present")
    * token.expect("Token must be present");
@@ -231,7 +231,7 @@ class Option {
    * @param next Function called only when this option is Some.
    * @return Result of @p next for Some, or None for None.
    *
-   * ```
+   * ```c++
    * Option<int> plusOneIfPositive(const int& v) {
    *   return v > 0 ? Option<int>::Some(v + 1) : Option<int>::None();
    * }
