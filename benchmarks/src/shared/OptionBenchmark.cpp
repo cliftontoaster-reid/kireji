@@ -6,8 +6,6 @@ static Option<int> optionAndThenIdentity(const int& value) {
   return Option<int>::Some(value);
 }
 
-static Option<int> optionAndThenNone(const int&) { return Option<int>::None(); }
-
 static int fallbackValue() { return 123; }
 
 static Option<int> fallbackOption() { return Option<int>::Some(456); }
@@ -162,7 +160,8 @@ static void BM_Option_take_some(benchmark::State& state) {
     Option<int> value = Option<int>::Some(42);
     Option<int> taken = value.take();
     benchmark::DoNotOptimize(taken);
-    benchmark::DoNotOptimize(value.is_none());
+    bool is_none = value.is_none();
+    benchmark::DoNotOptimize(is_none);
   }
   state.SetItemsProcessed(static_cast<int64_t>(state.iterations()));
 }
@@ -173,7 +172,8 @@ static void BM_Option_replace_some(benchmark::State& state) {
     Option<int> value = Option<int>::Some(1);
     Option<int> previous = value.replace(2);
     benchmark::DoNotOptimize(previous);
-    benchmark::DoNotOptimize(value.unwrap());
+    int unwrapped = value.unwrap();
+    benchmark::DoNotOptimize(unwrapped);
   }
   state.SetItemsProcessed(static_cast<int64_t>(state.iterations()));
 }
