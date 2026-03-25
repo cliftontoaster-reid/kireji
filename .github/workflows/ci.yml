@@ -53,4 +53,22 @@ jobs:
         run: cmake --build build/${{ matrix.compiler }}/${{ matrix.build_type }} --parallel
 
       - name: Test
-        run: ctest --test-dir build/${{ matrix.compiler }}/${{ matrix.build_type }} --output-on-failure
+        run: |
+          mkdir -p build/${{ matrix.compiler }}/${{ matrix.build_type }}/ctest_reports
+          ctest --test-dir build/${{ matrix.compiler }}/${{ matrix.build_type }} --output-on-failure --verbose \
+            | tee build/${{ matrix.compiler }}/${{ matrix.build_type }}/ctest_reports/ctest.log
+
+      - name: Generate coverage report
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y lcov
+          lcov --directory build/${{ matrix.compiler }}/${{ matrix.build_type }} --zerocounters
+          lcov --capture --directory build/${{ matrix.compiler }}/${{ matrix.build_type }} --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info
+          lcov --list coverage.info
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.info
