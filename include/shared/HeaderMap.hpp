@@ -13,12 +13,12 @@
  * accept any case, but each header is stored once and keeps its original
  * position in insertion order.
  *
- * @code
+ * ```
  * HeaderMap headers;
  * headers.set("Host", "example.com");
  * headers.set("Content-Length", "12");
  * const std::string* host = headers.get("host");
- * @endcode
+ * ```
  */
 class HeaderMap {
  public:

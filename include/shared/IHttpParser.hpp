@@ -11,14 +11,14 @@
  * internally, and expose completed requests through hasRequest() and
  * nextRequest(). Packet boundaries are not part of the contract.
  *
- * @code
+ * ```
  * parser.feed(data, size);
  * while (parser.hasRequest()) {
  *   HttpRequest* request = parser.nextRequest();
  *   // process request
  *   delete request;
  * }
- * @endcode
+ * ```
  */
 class IHttpParser {
  public:

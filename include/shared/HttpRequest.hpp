@@ -71,14 +71,14 @@ HttpMethod parseHttpMethod(const std::string& method, HttpVersion version);
  * fields. Concrete subclasses implement decoding and encoding for a specific
  * transport or HTTP version.
  *
- * @code
+ * ```
  * class ExampleRequest : public HttpRequest {
  *  public:
  *   ExampleRequest() : HttpRequest(GET, "/", HTTP_1_0) {}
  *   HttpRequest* decode(const char* data, size_t size) { return NULL; }
  *   std::string encode() const { return path; }
  * };
- * @endcode
+ * ```
  */
 class HttpRequest {
  public:

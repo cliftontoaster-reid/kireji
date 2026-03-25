@@ -12,12 +12,12 @@
  * appending, indexed access, reserving capacity, and removing the oldest
  * element from the front.
  *
- * @code
+ * ```
  * Vec<int> values;
  * values.push_back(10);
  * values.push_back(20);
  * int first = values.pop_front(); // first == 10
- * @endcode
+ * ```
  *
  * @tparam T Stored element type.
  */

@@ -9,7 +9,7 @@
  * Http10Parser accepts raw TCP chunks, keeps incomplete data internally, and
  * exposes completed requests in arrival order. It is non-copyable.
  *
- * @code
+ * ```
  * Http10Parser parser;
  * parser.feed(data, size);
  * while (parser.hasRequest()) {
@@ -17,7 +17,7 @@
  *   // process request
  *   delete request;
  * }
- * @endcode
+ * ```
  */
 class Http10Parser : public IHttpParser {
  public:
