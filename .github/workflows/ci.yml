@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: ${{ matrix.compiler }} / ${{ matrix.build_type }}
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        compiler:
+          - cc
+          - clang
+          - gcc
+        build_type:
+          - Debug
+          - Release
+        include:
+          - compiler: cc
+            c_compiler: cc
+            cxx_compiler: c++
+          - compiler: clang
+            c_compiler: clang
+            cxx_compiler: clang++
+          - compiler: gcc
+            c_compiler: gcc
+            cxx_compiler: g++
+
+    steps:
+      - name: Check out source
+        uses: actions/checkout@v4
+
+      - name: Configure
+        run: >-
+          cmake -S . -B build/${{ matrix.compiler }}/${{ matrix.build_type }}
+          -G Ninja
+          -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+          -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
+          -DCMAKE_CXX_COMPILER=${{ matrix.cxx_compiler }}
+          -DBUILD_TESTS=ON
+          -DBUILD_EXAMPLES=OFF
+          -DBUILD_BENCHMARKS=OFF
+          -DBUILD_DOCS=OFF
+
+      - name: Build
+        run: cmake --build build/${{ matrix.compiler }}/${{ matrix.build_type }} --parallel
+
+      - name: Test
+        run: ctest --test-dir build/${{ matrix.compiler }}/${{ matrix.build_type }} --output-on-failure
