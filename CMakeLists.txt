@@ -34,6 +34,17 @@ option(BUILD_BENCHMARKS "Build benchmark applications (default: OFF)" OFF)
 option(BUILD_DOCS "Build documentation (default: OFF)" OFF)
 option(BUILD_SHARED "Build shared library (default: ON)" ON)
 option(BUILD_STATIC "Build static library (default: ON)" ON)
+option(ENABLE_COVERAGE "Enable code coverage instrumentation (default: OFF)" OFF)
+
+if(ENABLE_COVERAGE)
+    if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+        message(STATUS "Code coverage enabled: adding --coverage flags")
+        add_compile_options(--coverage -g -O0)
+        add_link_options(--coverage)
+    else()
+        message(WARNING "Coverage is not supported with MSVC. ENABLE_COVERAGE will be ignored.")
+    endif()
+endif()
 
 # -------------------------------
 # Variables

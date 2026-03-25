@@ -44,6 +44,7 @@ jobs:
           -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
           -DCMAKE_C_COMPILER=${{ matrix.c_compiler }}
           -DCMAKE_CXX_COMPILER=${{ matrix.cxx_compiler }}
+          -DENABLE_COVERAGE=ON
           -DBUILD_TESTS=ON
           -DBUILD_EXAMPLES=OFF
           -DBUILD_BENCHMARKS=OFF
