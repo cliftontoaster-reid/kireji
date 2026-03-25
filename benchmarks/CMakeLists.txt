@@ -9,6 +9,10 @@ find_package(benchmark QUIET)
 if(NOT benchmark_FOUND)
 	message(STATUS "Google Benchmark not found. Fetching from GitHub...")
 
+	if(CMAKE_CXX_COMPILER_ID MATCHES "Clang")
+		add_compile_options(-Wno-c2y-extensions)
+	endif()
+
 	include(FetchContent)
 	FetchContent_Declare(
 		benchmark
@@ -37,6 +41,14 @@ if(NOT benchmark_FOUND)
 		CACHE
 			BOOL
 			"Don't install benchmark globally"
+		FORCE
+	)
+	set(
+		BENCHMARK_ENABLE_WERROR
+		OFF
+		CACHE
+			BOOL
+			"Don't treat benchmark warnings as errors"
 		FORCE
 	)
 	set(
@@ -75,6 +87,10 @@ file(GLOB_RECURSE BENCHMARK_SOURCES
 	"${BENCHMARK_SRC_DIR}/*.cxx"
 )
 
+set_source_files_properties("${BENCHMARK_SRC_DIR}/main.c"
+	PROPERTIES LANGUAGE CXX
+)
+
 if(NOT BENCHMARK_SOURCES)
 	message(WARNING "No benchmark sources found in ${BENCHMARK_SRC_DIR}")
 	message(STATUS "Create benchmark files (*.c or *.cpp) in ${BENCHMARK_SRC_DIR}")
@@ -85,6 +101,7 @@ endif()
 # Create benchmark executable
 # ========================================
 add_executable(kireji_benchmarks ${BENCHMARK_SOURCES})
+target_compile_definitions(kireji_benchmarks PRIVATE ${KIREJI_COMPILE_DEFS})
 
 # Link against the kireji library
 target_link_libraries(kireji_benchmarks PRIVATE kireji::kireji)
